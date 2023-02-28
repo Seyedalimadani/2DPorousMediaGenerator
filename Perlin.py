@@ -20,7 +20,7 @@ for y in range(height):
         perlin_noise[y][x] = snoise2(x/scale, y/scale, octaves=octaves, persistence=persistence, lacunarity=lacunarity)
 
 # Threshold the Perlin noise map to create a binary image
-threshold = 0
+threshold = 0.1
 binary_image = np.where(perlin_noise > threshold, 1, 0)
 binary_image = im.fromarray((binary_image * 255).astype(np.uint8))
 binary_image.save('2D.png')
