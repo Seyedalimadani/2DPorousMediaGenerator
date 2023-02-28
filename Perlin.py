@@ -1,5 +1,7 @@
 import numpy as np
-from noise import snoise2  # Install the "noise" package using pip
+from noise import snoise2  # Install the "noise" package using pip beforehand 
+import cv2
+from PIL import Image as im
 
 # Define image size and Perlin noise parameters
 width = 512
@@ -16,10 +18,17 @@ for y in range(height):
         perlin_noise[y][x] = snoise2(x/scale, y/scale, octaves=octaves, persistence=persistence, lacunarity=lacunarity)
 
 # Threshold the Perlin noise map to create a binary image
-threshold = 0.3
+threshold = 0.5
 binary_image = np.where(perlin_noise > threshold, 1, 0)
+binary_image = im.fromarray((binary_image * 255).astype(np.uint8))
+binary_image.save('2D.png')
 
-# Display the binary image
-import matplotlib.pyplot as plt
-plt.imshow(binary_image, cmap='gray')
-plt.show()
+#smoothing image for ease of usage in the simulators and mesh proccesing
+# Reading the image
+image = cv2.imread('2D.png')
+averageBlur = cv2.blur(image, (5, 5))
+
+cv2.imshow('Raw image', image)
+cv2.imshow('Filtered image', averageBlur)
+cv2.waitKey()
+cv2.destroyAllWindows()
