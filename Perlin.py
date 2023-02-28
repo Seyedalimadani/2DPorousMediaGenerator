@@ -12,6 +12,7 @@ persistence = 0.5
 lacunarity = 2.0
 scale = 100.0
 
+
 # Generate Perlin noise map
 perlin_noise = np.zeros((height, width))
 for y in range(height):
@@ -27,9 +28,12 @@ binary_image.save('2D.png')
 #smoothing image for ease of usage in the simulators and mesh proccesing
 # Reading the image
 image = cv2.imread('2D.png')
+# Apply the bilateral filter to smooth the edges
 averageBlur = cv2.blur(image, (5, 5))
+gaussian = cv2.GaussianBlur(image, (3, 3), 0)
 os.remove('2D.png')
 cv2.imshow('Raw image', image)
-cv2.imshow('Filtered image', averageBlur)
+cv2.imshow('Filtered image by Blur', averageBlur)
+cv2.imshow('Filtered image by Gaussian', gaussian)
 cv2.waitKey()
 cv2.destroyAllWindows()
